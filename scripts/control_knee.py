@@ -476,7 +476,7 @@ def control_knee():
                 new_u, newIntegralError = controller.pid(thisError, u[-1], u[-2], integralError[-1], freq, [new_kp,
                                                                                                             new_ki,
                                                                                                             new_kd])
-                print(new_kp, new_ki, new_kd)
+                #print(new_kp, new_ki, new_kd)
 
             # no controller
             else:
@@ -536,7 +536,7 @@ def control_knee():
             stimMsg.pulse_width = [pw_q[-1], pw_h[-1], 0, 0]
             stimMsg.pulse_current = [current_q[-1], current_h[-1], 0, 0]
 
-        print(stimMsg.pulse_width)
+        #print(stimMsg.pulse_width)
 
         pub['control'].publish(stimMsg)  # send stim update
 

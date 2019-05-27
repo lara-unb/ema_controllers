@@ -20,11 +20,11 @@ if __name__ == "__main__":
     # init gui
     current_0 = 0
     enable_0 = True  # type: bool
-    str_0 = "/home/bb8/git/ema_controllers/scripts/ema/dataset/reference_for_thesis.mat"
+    str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/reference_for_thesis.mat"
     # str_1 = "/home/bb8/Desktop/subject01_"
-    str_1 = "/home/bb8/Documents/subject01_RIGHT_"
+    str_1 = "/home/ema/Documents/subject01_RIGHT_"
     # str_1 = "/home/bb8/Documents/subject01_LEFT_"
-    dt = 4
+    dt = 6
     Kp_init = 0.00145
     Ki_init = 0.00061
     Kd_init = 0.00013
@@ -34,11 +34,11 @@ if __name__ == "__main__":
     ILC_alpha_init = 0.2
     ILC_beta_init = 0.8
     ILC_gama_init = 0.02
-    min_pw_initQ = 0
-    min_pw_initH = 0
+    min_pw_initQ = 170
+    min_pw_initH = 130
 
     client1.update_configuration(
-        {"control_sel": 0, "channels_sel": 0, "current_quad": current_0, "current_hams": current_0, "enable_control": False,
+        {"control_sel": 0, "channels_sel": 0, "current_quad": 26, "current_hams": 26, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": dt, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
