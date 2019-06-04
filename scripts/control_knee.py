@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import ema.modules.control as control
-# import numpy as np
+import numpy as np
 import dynamic_reconfigure.client as reconfig
 import scipy.io as sio
 import datetime
@@ -63,6 +63,8 @@ global gui_gama
 global gui_A
 global gui_omega
 global gui_phase
+global gui_RC
+global gui_K
 
 gui_enable_c = [False]
 gui_control_sel = [0]
@@ -81,6 +83,8 @@ gui_gama = [0]
 gui_A = [0]
 gui_omega = [0]
 gui_phase = [0]
+gui_RC = [0]
+gui_K = [0]
 
 current_q = [0, 0]
 current_h = [0, 0]
@@ -119,6 +123,10 @@ u_i = 0
 Kp_vector = [0, 0]
 Ki_vector = [0, 0]
 Kd_vector = [0, 0]
+Kp_hat_vector = [0, 0]
+Ki_hat_vector = [0, 0]
+Kd_hat_vector = [0, 0]
+jcost_vector = [0, 0]
 HP_beta = 0.001
 ILC_init = [0.2, 0.8, 0.75]  # alpha, beta, gama
 ilc_send = [0, 0]
@@ -141,6 +149,8 @@ def server_callback(config):
     global ES_A_now
     global ES_omega_now
     global ES_phase_now
+    global ES_K_now
+    global ES_RC_now
     global ILC_alpha_now
     global ILC_beta_now
     global ILC_gama_now
@@ -160,6 +170,8 @@ def server_callback(config):
     ES_A_now = config['ES_A']
     ES_omega_now = config['ES_omega']
     ES_phase_now = config['ES_phase']
+    ES_K_now = config['ES_K']
+    ES_RC_now = config['ES_RC']
 
     # get ILC parameters
     ILC_alpha_now = config['ILC_alpha']
@@ -226,6 +238,8 @@ def server_callback(config):
     gui_A.append(ES_A_now)
     gui_omega.append(ES_omega_now)
     gui_phase.append(ES_phase_now)
+    gui_K.append(ES_K_now)
+    gui_RC.append(ES_RC_now)
 
     Kp_vector[-1] = Kp_now
     Ki_vector[-1] = Ki_now
@@ -309,6 +323,8 @@ def control_knee():
     global ES_A_now
     global ES_omega_now
     global ES_phase_now
+    global ES_K_now
+    global ES_RC_now
     global ILC_alpha_now
     global ILC_beta_now
     global ILC_gama_now
@@ -343,12 +359,6 @@ def control_knee():
         'signal': rospy.Publisher('control/stimsignal', Int32MultiArray, queue_size=10)
     })
 
-    # pub = {}
-    # pub['talker'] = rospy.Publisher('chatter', String, queue_size=10)
-    # pub['control'] = rospy.Publisher('stimulator/ccl_update', Stimulator, queue_size=10)
-    # pub['angle'] = rospy.Publisher('control/angle', Float64, queue_size=10)
-    # pub['signal'] = rospy.Publisher('control/stimsignal', Int32MultiArray, queue_size=10)
-
     # define loop rate (in hz)
     rate = rospy.Rate(freq)
 
@@ -368,23 +378,30 @@ def control_knee():
     pw_min_q = 0
     channels_sel = 0
     control_onoff = False
-    ESC_now = [0, 0, 0]
+    ESC_now = [0, 0, 0, 0, 0]
     ILC_now = [0, 0, 0]
     co_activation = False
+    # initTime = rospy.get_rostime().nsecs
+    initTime = tempo.time()
 
     # ---------------------------------------------------- start
     while not rospy.is_shutdown():
 
         thisKnee = angle[-1]
         thisError = err_angle[-1]
-        thisTime = rospy.get_rostime().secs
+        # thisTime = rospy.get_rostime().nsecs - initTime
+        thisTime = tempo.time() - initTime
 
         # ============================== >controllers start here
-        new_kp = 0
-        new_ki = 0
-        new_kd = 0
+        new_kp = Kp_vector[-1]
+        new_ki = Ki_vector[-1]
+        new_kd = Kd_vector[-1]
+        new_kp_hat = Kp_hat_vector[-1]
+        new_ki_hat = Ki_hat_vector[-1]
+        new_kd_hat = Kd_hat_vector[-1]
         newIntegralError = 0
         new_u = 0
+        jcost = controller.jfunction(thisError, freq)  # cost function
 
         if not co_activation:
             co_act_h = 0
@@ -427,7 +444,7 @@ def control_knee():
                 ilc_send[0] = ilc_memory[0][ilc_i]
                 ilc_send[1] = ilc_memory[1][ilc_i]
 
-                print(thisU_PID)
+                # print(thisU_PID)
 
                 # only change new_u after the second cycle
                 if ilc_memory[0][ilc_i] == 0:
@@ -455,30 +472,34 @@ def control_knee():
 
             # PID-ES
             elif control_sel == 3:
-                # calculate new pid parameters
-                jcost = controller.jfunction(thisError, freq)  # cost function
-
+                # calculate new pid parameters using ES
                 ESC_now[0] = ES_A_now
                 ESC_now[1] = ES_omega_now
                 ESC_now[2] = ES_phase_now
+                ESC_now[3] = ES_RC_now
+                ESC_now[4] = ES_K_now
 
-                new_kp = controller.pid_es(jcost, HP_beta, ESC_now, thisError, Kp_vector[-1], thisTime, freq)  # new kp
+                new_kp, new_kp_hat = controller.pid_es2(jcost, jcost_vector[-1], Kp_vector[-1], Kp_hat_vector[-1],
+                                                        1/freq, thisTime, ESC_now)  # new kp
 
-                ESC_now[0] = ES_A_now*2
-                ESC_now[1] = ES_omega_now-1
-                # ESC_now[2] = ES_phase_now
-                new_ki = controller.pid_es(jcost, HP_beta, ESC_now, thisError, Ki_vector[-1], thisTime, freq)  # new ki
+                ESC_now[0] = ES_A_now/2
+                ESC_now[1] = ES_omega_now - 2
+                ESC_now[2] = ES_phase_now + 0.1745
+                new_ki, new_ki_hat = controller.pid_es2(jcost, jcost_vector[-1], Ki_vector[-1], Ki_hat_vector[-1],
+                                                        1/freq, thisTime, ESC_now)  # new ki
 
-                ESC_now[0] = ES_A_now*8
-                ESC_now[1] = ES_omega_now-2
-                # ESC_now[2] = ES_phase_now
-                new_kd = controller.pid_es(jcost, HP_beta, ESC_now, thisError, Kd_vector[-1], thisTime, freq)  # new kd
+                ESC_now[0] = ES_A_now/8
+                ESC_now[1] = ES_omega_now-4
+                ESC_now[2] = ES_phase_now + 0.523
+                new_kd, new_kd_hat = controller.pid_es2(jcost, jcost_vector[-1], Kd_vector[-1], Kd_hat_vector[-1],
+                                                        1/freq, thisTime, ESC_now)  # new kd
 
                 # do PID
                 new_u, newIntegralError = controller.pid(thisError, u[-1], u[-2], integralError[-1], freq, [new_kp,
                                                                                                             new_ki,
                                                                                                             new_kd])
-                #print(new_kp, new_ki, new_kd)
+
+
 
             # no controller
             else:
@@ -487,6 +508,10 @@ def control_knee():
                 new_kp = 0
                 new_ki = 0
                 new_kd = 0
+                new_kp_hat = 0
+                new_ki_hat = 0
+                new_kd_hat = 0
+                jcost = 0
                 newIntegralError = 0
                 new_u = 0
 
@@ -499,12 +524,12 @@ def control_knee():
         Kp_vector.append(new_kp)
         Ki_vector.append(new_ki)
         Kd_vector.append(new_kd)
+        Kp_hat_vector.append(new_kp_hat)
+        Ki_hat_vector.append(new_ki_hat)
+        Kd_hat_vector.append(new_kd_hat)
+        jcost_vector.append(jcost)
         integralError.append(newIntegralError)
         u.append(new_u)
-
-        # print(u[-1], integralError[-1], Kp_vector[-1], Ki_vector[-1], Kd_vector[-1])
-        # print refKnee[-1]
-        # print(Kp_vector[-1], Ki_vector[-1], Kd_vector[-1])
 
         # ============================== controllers end here
 
@@ -524,7 +549,7 @@ def control_knee():
             pw_h.append(co_act_h)
             controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), H : " % (thisKnee, thisError, u[-1], pw_h[-1])
 
-        # print(controlMsg)
+        print(controlMsg)
 
         # define current for muscles
         current_q.append(new_current_quad)
@@ -538,16 +563,14 @@ def control_knee():
             stimMsg.pulse_width = [pw_q[-1], pw_h[-1], 0, 0]
             stimMsg.pulse_current = [current_q[-1], current_h[-1], 0, 0]
 
-        #print(stimMsg.pulse_width)
-
         pub['control'].publish(stimMsg)  # send stim update
 
         angleMsg.data = thisKnee
         pub['angle'].publish(angleMsg)  # send imu update
 
         # update timestamp
-        ts = tempo.time()
-        t_control.append(ts)
+        # ts = tempo.time()
+        t_control.append(thisTime)
 
         # next iteration
         rate.sleep()
@@ -559,10 +582,10 @@ def control_knee():
     stim_lists = [current_q, current_h, pw_q, pw_h, t_control]
     ref_lists = [refKnee, t_ref]
     ilc_lists = [ilc_memory, ILC_now, t_control]
-    esc_lists = [ESC_now, t_control]
+    esc_lists = [ESC_now, t_control, Kp_hat_vector, Ki_hat_vector, Kd_hat_vector, jcost_vector]
     control_lists = [u, t_control]
     gui_lists = ([t_gui, gui_enable_c, gui_control_sel, gui_step_time, gui_kp, gui_ki, gui_kd, gui_alpha,
-                 gui_beta, gui_gama, gui_A, gui_omega, gui_phase, gui_channels_sel, gui_pw_min_q, gui_pw_min_h])
+                 gui_beta, gui_gama, gui_A, gui_omega, gui_phase, gui_channels_sel, gui_pw_min_q, gui_pw_min_h, gui_K, gui_RC])
     path_lists = ([gui_ref_param])
     steps_lists = ([t_steps, count_steps])
 

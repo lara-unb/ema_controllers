@@ -61,12 +61,51 @@ class Control:
 
         return theta
 
+    # ES 2 version
+    def pid_es2(self, jcost, last_j_cost, last_y, last_uhat, dt, t, ESCparam):
+
+        # ES parameters
+        A = ESCparam[0]
+        omega = 2*np.pi*ESCparam[1]
+        phase = ESCparam[2]
+        RC = ESCparam[3]
+        K = ESCparam[4]
+
+        # (1) Filter
+        hp_result = self.HP_filter_iterative(jcost, last_j_cost, last_y, RC)
+
+        # hp_result = 1
+
+        # (2) *a.sin(wt - phase)
+        xi = hp_result * np.sin(omega * t + phase)
+
+        # (3) integrate and apply gain K
+        uhat = last_uhat + xi*K*dt
+
+        # (4) + a.sin(wt)
+        u = uhat + A*np.sin(omega*t + phase)
+
+        if u < 0:
+            u = 0
+
+        if uhat < 0:
+            uhat = 0
+
+        return u, uhat
+
+
+    # HP filter
+    def HP_filter_iterative(self, x, last_x, last_y, a):
+        y = a*(last_y + x - last_x)
+
+        return y
+
 
     # ILC-PID
     def pid_ilc(self, ilc_memory, ilc_param, thisu_pid):
 
-        err_past = ilc_memory[1]
-        u_past = ilc_memory[0]
+        err_past = ilc_memory[0]
+        u_past = ilc_memory[1]
 
         alpha = ilc_param[0]
         beta = ilc_param[1]
@@ -76,8 +115,10 @@ class Control:
 
         if ilc_u > alpha*1.2:
             ilc_u = alpha*1.2
+            print("here")
         elif ilc_u < -alpha*1.2:
             ilc_u = -alpha*1.2
+            print("here")
 
         u = ilc_u + beta * thisu_pid
 
@@ -88,7 +129,6 @@ class Control:
     def jfunction(self, e, freq):
 
         Ts = 1/freq
-        e = np.rad2deg(e)
         jcost = Ts*e*e
 
         return jcost
