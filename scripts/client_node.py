@@ -21,28 +21,37 @@ if __name__ == "__main__":
     current_0 = 0
     enable_0 = True  # type: bool
     str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/reference_for_thesis.mat"
-    # str_1 = "/home/bb8/Desktop/subject01_"
-    str_1 = "/home/ema/Documents/subject01_RIGHT_"
-    # str_1 = "/home/bb8/Documents/subject01_LEFT_"
-    dt = 6
+    str_1 = "/home/ema/Documents/subject03"
+    # str_1 = "/home/bb8/Documents/subject01"
+    dt = 3
     Kp_init = 0.00145
     Ki_init = 0.00061
     Kd_init = 0.00013
     ES_A_init = 800
-    ES_omega_init = 8
+    ES_omega_init = 16 #8
     ES_phase_init = 0
     ILC_alpha_init = 0.2
     ILC_beta_init = 0.8
-    ILC_gama_init = 0.02
-    min_pw_initQ = 170
-    min_pw_initH = 130
+    ILC_gama_init = 0.0005
+
+    # # left
+    # min_pw_q = 220
+    # min_pw_h = 240
+    # i_q = 32
+    # i_h = 18
+
+    # # right
+    min_pw_q = 110
+    min_pw_h = 390
+    i_q = 22
+    i_h = 14
 
     client1.update_configuration(
-        {"control_sel": 0, "channels_sel": 0, "current_quad": 26, "current_hams": 26, "enable_control": False,
+        {"control_sel": 0, "channels_sel": 1, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": dt, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
-         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
-         "save_path": str_1, "min_pw_q": min_pw_initQ, "min_pw_h": min_pw_initH})
+         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": True,
+         "save_path": str_1, "min_pw_q": min_pw_q, "min_pw_h": min_pw_h})
 
     # rate
     rate = rospy.Rate(5)

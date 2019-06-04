@@ -427,6 +427,8 @@ def control_knee():
                 ilc_send[0] = ilc_memory[0][ilc_i]
                 ilc_send[1] = ilc_memory[1][ilc_i]
 
+                print(thisU_PID)
+
                 # only change new_u after the second cycle
                 if ilc_memory[0][ilc_i] == 0:
                     new_u = thisU_PID
@@ -564,12 +566,35 @@ def control_knee():
     path_lists = ([gui_ref_param])
     steps_lists = ([t_steps, count_steps])
 
-    # save .mat
+    # create name of the file
     currentDT = datetime.datetime.now()
     # path_str = "/home/bb8/Desktop/gait_"
     path_str = gui_save_param[-1]
+    if channels_sel == 1:  # right leg
+        leg_str = '_R_'
+    else:  # left leg
+        leg_str = '_L_'
+
+    if control_sel == 0:
+        control_str = '0_'
+    elif control_sel == 1:
+        control_str = '1_'
+    elif control_sel == 2:
+        control_str = '2_'
+    elif control_sel == 3:
+        control_str = '3_'
+    else:
+        control_str = '4_'
+
+    if not co_activation:
+        coact_str = "_noCA"
+    else:
+        coact_str = "_CA"
+
     currentDT_str = str(currentDT)
-    name_file = path_str + currentDT_str + ".mat"
+    name_file = path_str + coact_str + leg_str + control_str + currentDT_str + ".mat"
+
+    # save .mat
     sio.savemat(name_file, {'angle_err_lists': angle_err_lists, 'pid_lists': pid_lists, 'stim_lists': stim_lists,
                             'ref_lists': ref_lists, 'ilc_lists': ilc_lists, 'control_lists': control_lists,
                             'esc_lists': esc_lists, 'gui_lists': gui_lists, 'path_lists': path_lists,

@@ -76,6 +76,8 @@ class Control:
 
         if ilc_u > alpha*1.2:
             ilc_u = alpha*1.2
+        elif ilc_u < -alpha*1.2:
+            ilc_u = -alpha*1.2
 
         u = ilc_u + beta * thisu_pid
 
