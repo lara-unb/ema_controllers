@@ -11,8 +11,8 @@ clear;
 
 
 t = linspace(0,1,500);
-ref1 = 70*t-10;
-ref2 = 60*ones(1,length(t));
+ref1 = 45*t-5;
+ref2 = 40*ones(1,length(t));
 
 knee_ref = [ref1, ref2, flip(ref1)];
 

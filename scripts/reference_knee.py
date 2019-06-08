@@ -35,18 +35,21 @@ def get_reference():
     # communicate with the dynamic server
     dyn_params = reconfig.Client('server', config_callback=gui_callback)
 
-    # determine node freq
-    # freq = len(perc_avg_gait)/gait_period
-    # rate = rospy.Rate(freq)
-    # reference_path = "/home/bb8/git/ema_controllers/scripts/ema/dataset/gait03_.mat"
-    # reference_path = ""
+    step_time = 3  # se eu alterar aqui eu preciso alterar na GUI!
+    # gait01 e gait03: 751 dados
+    # gait04: 1000 dados
+    # ref..angle, refnewangle: 10000
+    # reference_for_thesis
 
-    rate = rospy.Rate(2)
+    # 1500 dados em x segundos:
+    new_freq = 1500/step_time
+
+    rate = rospy.Rate(new_freq)
 
     control_onoff = False
     count = 0
     number_steps = 0
-    step_time = 0.5
+    # step_time = 0.5
 
     while not rospy.is_shutdown():
 
@@ -64,10 +67,10 @@ def get_reference():
                 number_steps = number_steps + 1
 
             # check step_time for new frequency
-            if step_time == 0:
-                print("Ooops, step time cannot be zero, the frequency was not changed.")
-            else:
-                new_freq = len(knee_ref) / step_time
+            # if step_time == 0:
+            #     print("Ooops, step time cannot be zero, the frequency was not changed.")
+            # else:
+            #     new_freq = len(knee_ref) / step_time
 
             # send messages
             pub['ref'].publish(knee_ref[count])
@@ -79,11 +82,11 @@ def get_reference():
         else:
             count = 0
             number_steps = 0
-            new_freq = 2
+            # new_freq = 2
             pub['ref'].publish(0)
             pub['steps'].publish(number_steps)
 
-        rate = rospy.Rate(new_freq)
+        # rate = rospy.Rate(new_freq)
         rate.sleep()
 
 

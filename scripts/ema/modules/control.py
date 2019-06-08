@@ -85,6 +85,8 @@ class Control:
         # (4) + a.sin(wt)
         u = uhat + A*np.sin(omega*t + phase)
 
+        # print hp_result, xi, uhat, u
+
         if u < 0:
             u = 0
 
@@ -102,7 +104,7 @@ class Control:
 
 
     # ILC-PID
-    def pid_ilc(self, ilc_memory, ilc_param, thisu_pid):
+    def pid_ilc(self, ilc_memory, ilc_param, thisu_pid, ilc_i):
 
         err_past = ilc_memory[0]
         u_past = ilc_memory[1]
@@ -111,16 +113,22 @@ class Control:
         beta = ilc_param[1]
         gama = ilc_param[2]
 
-        ilc_u = alpha * (u_past + gama * err_past)
+        ilc_u = (u_past + gama * err_past)
 
-        if ilc_u > alpha*1.2:
-            ilc_u = alpha*1.2
-            print("here")
-        elif ilc_u < -alpha*1.2:
-            ilc_u = -alpha*1.2
-            print("here")
+        if ilc_u > 1.5:
+            ilc_u = 1.5
+        elif ilc_u < -1.5:
+            ilc_u = -1.5
 
-        u = ilc_u + beta * thisu_pid
+        # if np.sign(thisu_pid) == np.sign(ilc_u):
+        #     u = alpha*ilc_u + beta * thisu_pid
+        # else:
+        #     u = thisu_pid
+
+        u = alpha * ilc_u + beta * thisu_pid
+
+        # if ilc_i == 20:
+        #     print u_past, ilc_u, thisu_pid, u
 
         return u
 

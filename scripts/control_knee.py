@@ -65,13 +65,14 @@ global gui_omega
 global gui_phase
 global gui_RC
 global gui_K
+global initTime
 
 gui_enable_c = [False]
 gui_control_sel = [0]
 gui_pw_min_q = [0]
 gui_pw_min_h = [0]
 gui_channels_sel = [0]
-gui_step_time = [0]
+gui_step_time = [3]
 gui_ref_param = ['']
 gui_save_param = ['']
 gui_kp = [0]
@@ -130,6 +131,7 @@ jcost_vector = [0, 0]
 HP_beta = 0.001
 ILC_init = [0.2, 0.8, 0.75]  # alpha, beta, gama
 ilc_send = [0, 0]
+initTime = 0
 
 
 # get information from GUI
@@ -244,6 +246,10 @@ def server_callback(config):
     Kp_vector[-1] = Kp_now
     Ki_vector[-1] = Ki_now
     Kd_vector[-1] = Kd_now
+    Kp_hat_vector[-1] = Kp_now
+    Ki_hat_vector[-1] = Ki_now
+    Kd_hat_vector[-1] = Kd_now
+
 
 
 # IMU sensor
@@ -261,11 +267,11 @@ def imu_callback(data):
 
     # roll: correct issues with more than one axis rotating
     # if y >= 0:
-    #     y = (y/pi) * 180 #deg2rad
+    #     y = (y/pi) * 180  # deg2rad
     #     if abs(x) > (pi*0.5):
     #         y = 180-y
     # else:
-    #     y = (y/pi) * 180 #deg2rad
+    #     y = (y/pi) * 180  # deg2rad
     #     if abs(x) > (pi*0.5):
     #         y = 180 - y
     #     else:
@@ -279,10 +285,12 @@ def imu_callback(data):
 
     # angle error
     err = refKnee[-1] - x
+    # err = refKnee[-1] - y
 
     # append
-    ts = tempo.time()
+    ts = tempo.time() - initTime
     angle.append(x)
+    # angle.append(y)
     err_angle.append(err)
     t_angle.append(ts)
 
@@ -291,7 +299,7 @@ def imu_callback(data):
 def reference_callback(data):
     ref = data.data
     refKnee.append(ref)
-    ts = tempo.time()
+    ts = tempo.time() - initTime
     t_ref.append(ts)
 
 
@@ -299,7 +307,7 @@ def reference_callback(data):
 def steps_callback(data):
     steps = data.data
     count_steps.append(steps)
-    ts = tempo.time()
+    ts = tempo.time() - initTime
     t_steps.append(ts)
 
 
@@ -328,6 +336,7 @@ def control_knee():
     global ILC_alpha_now
     global ILC_beta_now
     global ILC_gama_now
+    global initTime
 
     # init_variables
     t_control = [0, 0]
@@ -453,7 +462,7 @@ def control_knee():
                     ILC_now[0] = ILC_alpha_now
                     ILC_now[1] = ILC_beta_now
                     ILC_now[2] = ILC_gama_now
-                    new_u = controller.pid_ilc(ilc_send, ILC_now, thisU_PID)
+                    new_u = controller.pid_ilc(ilc_send, ILC_now, thisU_PID, ilc_i)
 
                 if new_u > 1:
                     new_u = 1
@@ -482,15 +491,28 @@ def control_knee():
                 new_kp, new_kp_hat = controller.pid_es2(jcost, jcost_vector[-1], Kp_vector[-1], Kp_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new kp
 
-                ESC_now[0] = ES_A_now/2
-                ESC_now[1] = ES_omega_now - 2
-                ESC_now[2] = ES_phase_now + 0.1745
+                # new_ki = new_kp/2
+                # new_kd = new_kp/8
+
+                ESC_now[0] = ES_A_now/2  # ES_A_now
+                ESC_now[1] = ES_omega_now-0.3
+                # ESC_now[2] = ES_phase_now + 0.1745
+                # ESC_now[3] = ES_RC_now/2
+                # ESC_now[4] = ES_K_now/2
+
+                # print new_kp, new_ki, new_kd
+                #
+                # print 'ki'
                 new_ki, new_ki_hat = controller.pid_es2(jcost, jcost_vector[-1], Ki_vector[-1], Ki_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new ki
 
-                ESC_now[0] = ES_A_now/8
-                ESC_now[1] = ES_omega_now-4
-                ESC_now[2] = ES_phase_now + 0.523
+                ESC_now[0] = ES_A_now/8  # ES_A_now
+                ESC_now[1] = ES_omega_now-0.5
+                # ESC_now[2] = ES_phase_now + 0.523
+                # ESC_now[3] = ES_RC_now/8
+                # ESC_now[4] = ES_K_now/8
+
+                # print 'kd'
                 new_kd, new_kd_hat = controller.pid_es2(jcost, jcost_vector[-1], Kd_vector[-1], Kd_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new kd
 
@@ -498,7 +520,6 @@ def control_knee():
                 new_u, newIntegralError = controller.pid(thisError, u[-1], u[-2], integralError[-1], freq, [new_kp,
                                                                                                             new_ki,
                                                                                                             new_kd])
-
 
 
             # no controller
@@ -549,7 +570,7 @@ def control_knee():
             pw_h.append(co_act_h)
             controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), H : " % (thisKnee, thisError, u[-1], pw_h[-1])
 
-        print(controlMsg)
+        # print(controlMsg)
 
         # define current for muscles
         current_q.append(new_current_quad)
