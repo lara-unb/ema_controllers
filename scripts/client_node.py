@@ -60,16 +60,16 @@ if __name__ == "__main__":
 
     # # right
     min_pw_q = 200
-    min_pw_h = 190
-    i_q = 32  # 26
-    i_h = 0  # 26
+    min_pw_h = 200
+    i_q = 24  # 24
+    i_h = 24  # 24
 
     client1.update_configuration(
-        {"control_sel": 2, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
+        {"control_sel": 0, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": step_t, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ES_RC": ES_RC_init,"ES_K": ES_K_init,
-         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
+         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": True,
          "save_path": str_1, "min_pw_q": min_pw_q, "min_pw_h": min_pw_h})
 
     # rate
