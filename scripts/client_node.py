@@ -25,9 +25,13 @@ if __name__ == "__main__":
     # str_1 = "/home/bb8/Documents/subject01"
     step_t = 3
 
-    Kp_init = 0.0010*2
-    Ki_init = Kp_init/2
-    Kd_init = Kp_init/8
+    # Kp_init = 0.0008*2
+    # Ki_init = Kp_init/2
+    # Kd_init = Kp_init/8
+
+    Kp_init = 0.0004
+    Ki_init = 0.0001
+    Kd_init = 0
 
     # Kp_init = 0
     # Ki_init = 0
@@ -59,17 +63,17 @@ if __name__ == "__main__":
     # i_h = 18
 
     # # right
-    min_pw_q = 200
-    min_pw_h = 200
-    i_q = 24  # 24
-    i_h = 24  # 24
+    min_pw_q = 190
+    min_pw_h = 180
+    i_q = 34  # 24
+    i_h = 0  # 24
 
     client1.update_configuration(
         {"control_sel": 0, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": step_t, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ES_RC": ES_RC_init,"ES_K": ES_K_init,
-         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": True,
+         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
          "save_path": str_1, "min_pw_q": min_pw_q, "min_pw_h": min_pw_h})
 
     # rate
