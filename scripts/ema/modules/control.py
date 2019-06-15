@@ -85,8 +85,6 @@ class Control:
         # (4) + a.sin(wt)
         u = uhat + A*np.sin(omega*t + phase)
 
-        # print hp_result, xi, uhat, u
-
         if u < 0:
             u = 0
 

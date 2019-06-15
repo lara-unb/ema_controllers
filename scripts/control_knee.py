@@ -262,20 +262,20 @@ def imu_callback(data):
     euler = transformations.euler_from_quaternion([qx, qy, qz, qw], axes='rzyx')
 
     # z = euler[0]
-    # y = euler[1]
+    y = euler[1]
     x = euler[2]
 
     # roll: correct issues with more than one axis rotating
-    # if y >= 0:
-    #     y = (y/pi) * 180  # deg2rad
-    #     if abs(x) > (pi*0.5):
-    #         y = 180-y
-    # else:
-    #     y = (y/pi) * 180  # deg2rad
-    #     if abs(x) > (pi*0.5):
-    #         y = 180 - y
-    #     else:
-    #         y = 360 + y
+    if y >= 0:
+        y = (y/pi) * 180  # deg2rad
+        if abs(x) > (pi*0.5):
+            y = 180-y
+    else:
+        y = (y/pi) * 180  # deg2rad
+        # if abs(x) > (pi*0.5):
+        #     y = 180 - y
+        # else:
+        #     y = 360 + y
 
     # pitch: correct issues with more than one axis rotating
     x = (x / pi) * 180  # deg2rad
@@ -289,10 +289,12 @@ def imu_callback(data):
 
     # append
     ts = tempo.time() - initTime
-    angle.append(x)
-    # angle.append(y)
+    # angle.append(x)
+    angle.append(y)
     err_angle.append(err)
     t_angle.append(ts)
+
+    # print y
 
 
 # reference
@@ -453,8 +455,6 @@ def control_knee():
                 ilc_send[0] = ilc_memory[0][ilc_i]
                 ilc_send[1] = ilc_memory[1][ilc_i]
 
-                # print(thisU_PID)
-
                 # only change new_u after the second cycle
                 if ilc_memory[0][ilc_i] == 0:
                     new_u = thisU_PID
@@ -491,28 +491,21 @@ def control_knee():
                 new_kp, new_kp_hat = controller.pid_es2(jcost, jcost_vector[-1], Kp_vector[-1], Kp_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new kp
 
-                # new_ki = new_kp/2
-                # new_kd = new_kp/8
 
                 ESC_now[0] = ES_A_now/2  # ES_A_now
-                ESC_now[1] = ES_omega_now-0.3
-                # ESC_now[2] = ES_phase_now + 0.1745
+                # ESC_now[1] = ES_omega_now-2
+                ESC_now[2] = ES_phase_now + 0.1745
                 # ESC_now[3] = ES_RC_now/2
                 # ESC_now[4] = ES_K_now/2
-
-                # print new_kp, new_ki, new_kd
-                #
-                # print 'ki'
                 new_ki, new_ki_hat = controller.pid_es2(jcost, jcost_vector[-1], Ki_vector[-1], Ki_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new ki
 
                 ESC_now[0] = ES_A_now/8  # ES_A_now
-                ESC_now[1] = ES_omega_now-0.5
-                # ESC_now[2] = ES_phase_now + 0.523
+                # ESC_now[1] = ES_omega_now-3
+                ESC_now[2] = ES_phase_now + 0.523
                 # ESC_now[3] = ES_RC_now/8
                 # ESC_now[4] = ES_K_now/8
 
-                # print 'kd'
                 new_kd, new_kd_hat = controller.pid_es2(jcost, jcost_vector[-1], Kd_vector[-1], Kd_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new kd
 

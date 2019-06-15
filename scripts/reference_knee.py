@@ -35,14 +35,16 @@ def get_reference():
     # communicate with the dynamic server
     dyn_params = reconfig.Client('server', config_callback=gui_callback)
 
-    step_time = 3  # se eu alterar aqui eu preciso alterar na GUI!
+    step_time = 5  # se eu alterar aqui eu preciso alterar no client_node step_t = 6
     # gait01 e gait03: 751 dados
     # gait04: 1000 dados
     # ref..angle, refnewangle: 10000
-    # reference_for_thesis
+    # reference_for_thesis: 1500
+    # reference for thesis_rest:
 
     # 1500 dados em x segundos:
-    new_freq = 1500/step_time
+    length_reference = 2500
+    new_freq = length_reference/step_time
 
     rate = rospy.Rate(new_freq)
 

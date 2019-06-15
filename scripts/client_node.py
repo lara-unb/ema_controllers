@@ -20,18 +20,14 @@ if __name__ == "__main__":
     # init gui
     current_0 = 0
     enable_0 = True  # type: bool
-    str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/reference_for_thesis.mat"
+    str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/reference_for_thesis_rest.mat"
     str_1 = "/home/ema/Documents/Controllers_tests/sci_subject"
     # str_1 = "/home/bb8/Documents/subject01"
-    step_t = 3
+    step_t = 5  # se eu alterar aqui eu preciso alterar no reference_knee step_time
 
-    # Kp_init = 0.0008*2
-    # Ki_init = Kp_init/2
-    # Kd_init = Kp_init/8
-
-    Kp_init = 0.0004
-    Ki_init = 0.0001
-    Kd_init = 0
+    Kp_init = 0.0006
+    Ki_init = Kp_init/2
+    Kd_init = Kp_init/8
 
     # Kp_init = 0
     # Ki_init = 0
@@ -50,11 +46,11 @@ if __name__ == "__main__":
     ES_omega_init = 7  # 9.3   # 8
     ES_phase_init = 0
     ES_RC_init = 0.000048  # 0.000001
-    ES_K_init = 700
+    ES_K_init = 400
 
     ILC_alpha_init = 0.2
     ILC_beta_init = 1 - ILC_alpha_init
-    ILC_gama_init = 3*Kp_init
+    ILC_gama_init = 2*Kp_init
 
     # # left
     # min_pw_q = 220
@@ -65,11 +61,11 @@ if __name__ == "__main__":
     # # right
     min_pw_q = 190
     min_pw_h = 180
-    i_q = 34  # 24
+    i_q = 0  # 24
     i_h = 0  # 24
 
     client1.update_configuration(
-        {"control_sel": 0, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
+        {"control_sel": 3, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": step_t, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ES_RC": ES_RC_init,"ES_K": ES_K_init,
