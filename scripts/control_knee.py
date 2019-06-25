@@ -492,7 +492,7 @@ def control_knee():
                                                         1/freq, thisTime, ESC_now)  # new kp
 
 
-                ESC_now[0] = ES_A_now/2  # ES_A_now
+                ESC_now[0] = ES_A_now/4  # ES_A_now
                 # ESC_now[1] = ES_omega_now-2
                 ESC_now[2] = ES_phase_now + 0.1745
                 # ESC_now[3] = ES_RC_now/2
@@ -500,7 +500,7 @@ def control_knee():
                 new_ki, new_ki_hat = controller.pid_es2(jcost, jcost_vector[-1], Ki_vector[-1], Ki_hat_vector[-1],
                                                         1/freq, thisTime, ESC_now)  # new ki
 
-                ESC_now[0] = ES_A_now/8  # ES_A_now
+                ESC_now[0] = ES_A_now/16  # ES_A_now
                 # ESC_now[1] = ES_omega_now-3
                 ESC_now[2] = ES_phase_now + 0.523
                 # ESC_now[3] = ES_RC_now/8

@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6d4843f6-1b12-45fd-b1f4-ff22fe479b49" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cfg/Tutorials.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/cfg/Tutorials.cfg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/client_node.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/client_node.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/control_knee.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/control_knee.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/ema/dataset/create_newref.m" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ema/dataset/create_newref.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/ema/modules/control.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ema/modules/control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/reference_knee.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/reference_knee.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="297" lean-forward="true" selection-start-line="297" selection-end-line="297" />
+            <state relative-caret-position="7275">
+              <caret line="502" column="40" selection-start-line="502" selection-start-column="40" selection-end-line="502" selection-end-column="40" />
               <folding>
                 <element signature="e#22#34#0" expanded="true" />
               </folding>
@@ -33,17 +31,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/ema/modules/control.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
+            <state relative-caret-position="1245">
               <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/client_node.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="47" column="17" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
+            <state relative-caret-position="232">
+              <caret line="22" column="75" selection-start-line="22" selection-start-column="75" selection-end-line="22" selection-end-column="75" />
             </state>
           </provider>
         </entry>
@@ -51,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/reference_knee.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="45" column="25" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="25" />
+            <state relative-caret-position="420">
+              <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -116,11 +114,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/scripts/reference_knee.py" />
         <option value="$PROJECT_DIR$/cfg/Tutorials.cfg" />
-        <option value="$PROJECT_DIR$/scripts/client_node.py" />
         <option value="$PROJECT_DIR$/scripts/ema/modules/control.py" />
         <option value="$PROJECT_DIR$/scripts/control_knee.py" />
+        <option value="$PROJECT_DIR$/scripts/reference_knee.py" />
+        <option value="$PROJECT_DIR$/scripts/client_node.py" />
       </list>
     </option>
   </component>
@@ -135,7 +133,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -175,6 +172,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -208,7 +206,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="62" y="1069" width="1859" height="1092" extended-state="6" />
+    <frame x="62" y="-11" width="1859" height="1092" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15321702" />
@@ -234,17 +232,20 @@
     <entry file="file://$PROJECT_DIR$/scripts/ema/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/launch/controllers.launch">
+    <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="73" selection-start-line="7" selection-start-column="70" selection-end-line="7" selection-end-column="73" />
+        <state relative-caret-position="7275">
+          <caret line="502" column="40" selection-start-line="502" selection-start-column="40" selection-end-line="502" selection-end-column="40" />
+          <folding>
+            <element signature="e#22#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/reference_knee.py">
+    <entry file="file://$PROJECT_DIR$/scripts/ema/modules/control.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="45" column="25" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="25" />
+        <state relative-caret-position="1245">
+          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
         </state>
       </provider>
     </entry>
@@ -255,27 +256,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/launch/controllers.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="73" selection-start-line="7" selection-start-column="70" selection-end-line="7" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/reference_knee.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/client_node.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="47" column="17" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/ema/modules/control.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="297" lean-forward="true" selection-start-line="297" selection-end-line="297" />
-          <folding>
-            <element signature="e#22#34#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="232">
+          <caret line="22" column="75" selection-start-line="22" selection-start-column="75" selection-end-line="22" selection-end-column="75" />
         </state>
       </provider>
     </entry>

@@ -20,32 +20,23 @@ if __name__ == "__main__":
     # init gui
     current_0 = 0
     enable_0 = True  # type: bool
-    str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/reference_for_thesis_rest.mat"
+    str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/senoides1300.mat"
     str_1 = "/home/ema/Documents/Controllers_tests/sci_subject"
     # str_1 = "/home/bb8/Documents/subject01"
     step_t = 5  # se eu alterar aqui eu preciso alterar no reference_knee step_time
 
-    Kp_init = 0.0006
-    Ki_init = Kp_init/2
-    Kd_init = Kp_init/8
+    Kp_init = 0.00175
+    Ki_init = Kp_init/4
+    Kd_init = Kp_init/16
 
     # Kp_init = 0
     # Ki_init = 0
     # Kd_init = 0
 
-    # ES_A_init = 0.148
-    # ES_RC_init = 0.0080
-    # ES_K_init = 400
-    # ES_omega_init = 8  # 8
-    # ES_phase_init = 0
-    # ILC_alpha_init = 0.2
-    # ILC_beta_init = 0.8
-    # ILC_gama_init = 0.0005
-
-    ES_A_init = Kp_init/10
+    ES_A_init = Kp_init/20
     ES_omega_init = 7  # 9.3   # 8
     ES_phase_init = 0
-    ES_RC_init = 0.000048  # 0.000001
+    ES_RC_init = 0.000048
     ES_K_init = 400
 
     ILC_alpha_init = 0.2
@@ -59,17 +50,17 @@ if __name__ == "__main__":
     # i_h = 18
 
     # # right
-    min_pw_q = 190
-    min_pw_h = 180
-    i_q = 0  # 24
-    i_h = 0  # 24
+    min_pw_q = 230
+    min_pw_h = 310
+    i_q = 28  # 24
+    i_h = 18  # 24
 
     client1.update_configuration(
-        {"control_sel": 3, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
+        {"control_sel": 0, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": step_t, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ES_RC": ES_RC_init,"ES_K": ES_K_init,
-         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
+         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": True,
          "save_path": str_1, "min_pw_q": min_pw_q, "min_pw_h": min_pw_h})
 
     # rate
