@@ -42,6 +42,11 @@ def callback(config, level):
 		config.groups.groups.ILC_param.state = False
 		config.groups.groups.ESC_param.state = True
 
+	elif config['control_sel'] == 4:
+		config.groups.groups.PID_param.state = False
+		config.groups.groups.ILC_param.state = False
+		config.groups.groups.ESC_param.state = False
+
 	else:
 		config.groups.groups.PID_param.state = False
 		config.groups.groups.ILC_param.state = False

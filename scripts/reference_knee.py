@@ -52,18 +52,22 @@ def get_reference():
     control_onoff = False
     count = 0
     number_steps = 0
+    loaded = 0
     # step_time = 0.5
 
     while not rospy.is_shutdown():
 
         if control_onoff:
             # load reference
-            try:
-                reference_data = sio.loadmat(reference_path)
-                knee_ref = reference_data['knee_ref'][0]
-            except:
-                print("Ooops, the file you tried to load is not in the folder.")
-                knee_ref = [0, 0, 0, 0]
+            if loaded == 0:
+                try:
+                    reference_data = sio.loadmat(reference_path)
+                    knee_ref = reference_data['knee_ref'][0]
+                    loaded = 1
+                except:
+                    print("Ooops, the file you tried to load is not in the folder.")
+                    knee_ref = [0, 0, 0, 0]
+
 
             if count > len(knee_ref) - 1:
                 count = 0
@@ -85,7 +89,7 @@ def get_reference():
         else:
             count = 0
             number_steps = 0
-            # new_freq = 2
+            loaded = 0
             pub['ref'].publish(0)
             pub['steps'].publish(number_steps)
 

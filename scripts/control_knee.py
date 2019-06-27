@@ -110,7 +110,7 @@ t_gui = [0]
 t_steps = [0]
 time = [0]
 
-freq = 150.0
+freq = 100.0
 thisKnee = [0, 0]
 u = [0, 0]
 integralError = [0, 0]
@@ -249,8 +249,6 @@ def server_callback(config):
     Kp_hat_vector[-1] = Kp_now
     Ki_hat_vector[-1] = Ki_now
     Kd_hat_vector[-1] = Kd_now
-
-
 
 # IMU sensor
 def imu_callback(data):
@@ -514,6 +512,12 @@ def control_knee():
                                                                                                             new_ki,
                                                                                                             new_kd])
 
+            elif control_sel == 4:  # curve recruitment
+
+                if thisError < 0:
+                    new_u = -1
+                else:
+                    new_u = 1
 
             # no controller
             else:
@@ -620,8 +624,10 @@ def control_knee():
         control_str = '2_'
     elif control_sel == 3:
         control_str = '3_'
-    else:
+    elif control_sel == 4:
         control_str = '4_'
+    else:
+        control_str = 'x_'
 
     if not co_activation:
         coact_str = "_noCA"

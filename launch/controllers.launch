@@ -16,6 +16,7 @@
     <node name="reference" pkg="ema_controllers" type="reference_knee.py" output="screen" respawn="true" respawn_delay="5"/>
     <node name="lis" pkg="ema_controllers" type="listener.py" output="screen" respawn="true" respawn_delay="5"/>
     <node name="server" pkg="ema_controllers" type="server_node.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="curve" pkg="ema_controllers" type="curve_node.py" output="screen" respawn="true" respawn_delay="5"/>
 
   </group>
 	
