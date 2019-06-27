@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d4843f6-1b12-45fd-b1f4-ff22fe479b49" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/scripts/curve_node.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cfg/Tutorials.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/cfg/Tutorials.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/launch/controllers.launch" beforeDir="false" afterPath="$PROJECT_DIR$/launch/controllers.launch" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/client_node.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/client_node.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/control_knee.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/control_knee.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/ema/dataset/senoides1300.mat" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ema/dataset/senoides1300.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/reference_knee.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/reference_knee.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/server_node.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/server_node.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/curve_node.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/curve_node.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ema/dataset/create_calibration.m" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ema/dataset/create_calibration.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ema/dataset/curve_recruitmentPW.mat" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ema/dataset/curve_recruitmentPW.mat" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="112" column="10" selection-start-line="112" selection-start-column="10" selection-end-line="112" selection-end-column="10" />
+            <state relative-caret-position="515">
+              <caret line="289" selection-start-line="289" selection-end-line="289" />
               <folding>
                 <element signature="e#22#34#0" expanded="true" />
               </folding>
@@ -35,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/client_node.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
-              <caret line="62" column="68" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="68" />
+            <state relative-caret-position="870">
+              <caret line="60" column="55" selection-start-line="60" selection-start-column="55" selection-end-line="60" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -53,17 +49,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/launch/controllers.launch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="56" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
+            <state relative-caret-position="135">
+              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/curve_node.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+            <state relative-caret-position="-10">
+              <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -79,16 +75,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tempo</find>
-      <find>ts</find>
-      <find>0.02</find>
-      <find>kp_vector</find>
-      <find>new_kp</find>
-      <find>new_ki</find>
-      <find>new_ki_hat</find>
-      <find>Kd_vector</find>
-      <find>Kp_hat_vector</find>
-      <find>_ilc</find>
       <find>refer</find>
       <find>time</find>
       <find>new_freq</find>
@@ -102,13 +88,23 @@
       <find>freq =</find>
       <find>_es</find>
       <find>600</find>
-      <find>print</find>
       <find>control_str</find>
       <find>gen.enum</find>
-      <find>control_sel</find>
       <find>controller</find>
+      <find>control_sel</find>
       <find>gui_callback</find>
+      <find>knee_ref</find>
+      <find>step_t</find>
+      <find>refKnee</find>
+      <find>reference_callback</find>
+      <find>print</find>
+      <find>quad</find>
+      <find>enable_quad</find>
+      <find>control_onoff</find>
+      <find>control_enable_quad</find>
+      <find>round</find>
       <find>str_0</find>
+      <find>t_ref</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -120,11 +116,11 @@
         <option value="$PROJECT_DIR$/scripts/ema/modules/control.py" />
         <option value="$PROJECT_DIR$/scripts/server_node.py" />
         <option value="$PROJECT_DIR$/scripts/reference_knee.py" />
-        <option value="$PROJECT_DIR$/scripts/control_knee.py" />
-        <option value="$PROJECT_DIR$/launch/controllers.launch" />
         <option value="$PROJECT_DIR$/cfg/Tutorials.cfg" />
-        <option value="$PROJECT_DIR$/scripts/client_node.py" />
         <option value="$PROJECT_DIR$/scripts/curve_node.py" />
+        <option value="$PROJECT_DIR$/launch/controllers.launch" />
+        <option value="$PROJECT_DIR$/scripts/client_node.py" />
+        <option value="$PROJECT_DIR$/scripts/control_knee.py" />
       </list>
     </option>
   </component>
@@ -222,6 +218,17 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/curve_node.py</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scripts/ema/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -230,16 +237,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1065">
           <caret line="54" column="22" lean-forward="true" selection-start-line="54" selection-start-column="22" selection-end-line="54" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="112" column="10" selection-start-line="112" selection-start-column="10" selection-end-line="112" selection-end-column="10" />
-          <folding>
-            <element signature="e#22#34#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -260,13 +257,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/launch/controllers.launch">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="56" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cfg/Tutorials.cfg">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -274,17 +264,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/client_node.py">
+    <entry file="file://$PROJECT_DIR$/scripts/curve_node.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="62" column="68" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="68" />
+        <state relative-caret-position="-10">
+          <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/curve_node.py">
+    <entry file="file://$PROJECT_DIR$/launch/controllers.launch">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+        <state relative-caret-position="135">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/client_node.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="60" column="55" selection-start-line="60" selection-start-column="55" selection-end-line="60" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/control_knee.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="289" selection-start-line="289" selection-end-line="289" />
+          <folding>
+            <element signature="e#22#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -21,8 +21,9 @@ if __name__ == "__main__":
     current_0 = 0
     enable_0 = True  # type: bool
     str_0 = "/home/ema/git/ema_controllers/scripts/ema/dataset/senoides1300.mat"
-    str_1 = "/home/ema/Documents/Controllers_tests/test"
-    str_2 = "/home/ema/git/ema_controllers/scripts/ema/dataset/curve_recruitmentPW.mat"
+    # str_1 = "/home/ema/Documents/Controllers_tests/test"
+    str_1 = "/home/ema/git/ema_controllers/data/test"
+    str_2 = "/home/ema/git/ema_controllers/scripts/ema/dataset/curve_recruitmentU.mat"
     # str_1 = "/home/bb8/Documents/subject01"
     step_t = 5  # se eu alterar aqui eu preciso alterar no reference_knee step_time
 
@@ -51,17 +52,17 @@ if __name__ == "__main__":
     # i_h = 18
 
     # # right
-    min_pw_q = 230
-    min_pw_h = 310
-    i_q = 28  # 24
-    i_h = 18  # 24
+    min_pw_q = 0
+    min_pw_h = 0
+    i_q = 14  # 24
+    i_h = 0  # 24
 
     client1.update_configuration(
-        {"control_sel": 0, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
+        {"control_sel": 4, "channels_sel": 0, "current_quad": i_q, "current_hams": i_h, "enable_control": False,
          "enable_quad": enable_0, "enable_hams": enable_0, "ref_path": str_0, "step_time": step_t, "Kp": Kp_init,
          "Ki": Ki_init, "Kd": Kd_init, "ES_A": ES_A_init, "ES_omega": ES_omega_init, "ES_phase": ES_phase_init,
          "ES_RC": ES_RC_init,"ES_K": ES_K_init, "curve_path": str_2,
-         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": True,
+         "ILC_alpha": ILC_alpha_init, "ILC_beta": ILC_beta_init, "ILC_gama": ILC_gama_init, "co_activation": False,
          "save_path": str_1, "min_pw_q": min_pw_q, "min_pw_h": min_pw_h})
 
     # rate

@@ -22,11 +22,13 @@ from tf import transformations
 global angle
 global t_angle
 global t_ref
+global t_curve
 global t_gui
 global err_angle
 global time
 global thisKnee
 global refKnee
+global curveRecr
 global integralError
 global u
 global freq
@@ -102,10 +104,12 @@ control_onoff = False
 err_angle = [0]
 angle = [0]
 refKnee = [0]
+curveRecr = [0]
 count_steps = [0]
 
 t_angle = [0]
 t_ref = [0]
+t_curve = [0]
 t_gui = [0]
 t_steps = [0]
 time = [0]
@@ -143,6 +147,8 @@ def server_callback(config):
     global pw_min_h
     global channels_sel
     global control_onoff
+    global control_enable_quad
+    global control_enable_hams
     global co_activation
     global ilc_memory
     global Kp_now
@@ -191,8 +197,10 @@ def server_callback(config):
                 new_current_quad = config['current_quad']
             else:
                 new_current_quad = config['current_quad'] - 1
+            control_enable_quad = 1
         else:
             new_current_quad = 0
+            control_enable_quad = 0
 
         if config['enable_hams']:
             # update current, odd or even
@@ -200,8 +208,10 @@ def server_callback(config):
                 new_current_hams = config['current_hams']
             else:
                 new_current_hams = config['current_hams'] - 1
+            control_enable_hams = 1
         else:
             new_current_hams = 0
+            control_enable_hams = 0
 
         # get ref to get size of memory
         ilc_memory = [[0] * int(step_time * freq), [0] * int(step_time * freq)]
@@ -276,14 +286,14 @@ def imu_callback(data):
         #     y = 360 + y
 
     # pitch: correct issues with more than one axis rotating
-    x = (x / pi) * 180  # deg2rad
+    x = (x / pi) * 180  # deg2rad/
 
     # # yaw: correct issues with more than one axis rotating
     # z = (z/pi) * 180  # deg2rad
 
     # angle error
-    err = refKnee[-1] - x
-    # err = refKnee[-1] - y
+    # err = refKnee[-1] - x
+    err = refKnee[-1] - y
 
     # append
     ts = tempo.time() - initTime
@@ -311,6 +321,14 @@ def steps_callback(data):
     t_steps.append(ts)
 
 
+# curve recruitment
+def curve_callback(data):
+    curve = data.data
+    curveRecr.append(curve)
+    ts = tempo.time() - initTime
+    t_curve.append(ts)
+
+
 def control_knee():
     global t_control
     global stimMsg
@@ -323,6 +341,8 @@ def control_knee():
     global pw_min_q
     global channels_sel
     global control_onoff
+    global control_enable_quad
+    global control_enable_hams
     global ilc_memory
     global ilc_i
     global Kp_now
@@ -352,7 +372,8 @@ def control_knee():
     sub.update({
         'pedal': rospy.Subscriber('imu/pedal', Imu, callback=imu_callback),
         'ref': rospy.Subscriber('ref_channel', Float64, callback=reference_callback),
-        'steps': rospy.Subscriber('steps_channel', Float64, callback=steps_callback)
+        'steps': rospy.Subscriber('steps_channel', Float64, callback=steps_callback),
+        'curve': rospy.Subscriber('calibration_channel', Float64, callback=curve_callback)
     })
     # sub = {}
     # sub['pedal'] = rospy.Subscriber('imu/pedal', Imu, callback=imu_callback)
@@ -510,14 +531,14 @@ def control_knee():
                 # do PID
                 new_u, newIntegralError = controller.pid(thisError, u[-1], u[-2], integralError[-1], freq, [new_kp,
                                                                                                             new_ki,
+
                                                                                                             new_kd])
-
+            # CR
             elif control_sel == 4:  # curve recruitment
-
-                if thisError < 0:
-                    new_u = -1
-                else:
-                    new_u = 1
+                if control_enable_quad == 1:
+                    new_u = curveRecr[-1]
+                elif control_enable_hams == 1:
+                    new_u = -curveRecr[-1]
 
             # no controller
             else:
@@ -556,13 +577,14 @@ def control_knee():
 
         # define pw for muscles
         if u[-1] < 0:
-            new_pw = round(abs(u[-1]) * (500-pw_min_h) + pw_min_h) / 10 * 10  # u to pw
+            # new_pw = round(abs(u[-1]) * (500-pw_min_h) + pw_min_h) / 10 * 10  # u to pw
+            new_pw = round(abs(u[-1]) * (500-pw_min_h) + pw_min_h)  # u to pw
             pw_h.append(new_pw)
             pw_q.append(co_act_q)
             controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), Q : " % (thisKnee, thisError, u[-1], pw_q[-1])
 
         else:
-            new_pw = round(abs(u[-1]) * (500-pw_min_q) + pw_min_q) / 10 * 10  # u to pw
+            new_pw = round(abs(u[-1]) * (500-pw_min_q) + pw_min_q)  # u to pw
             pw_q.append(new_pw)
             pw_h.append(co_act_h)
             controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), H : " % (thisKnee, thisError, u[-1], pw_h[-1])
@@ -598,7 +620,7 @@ def control_knee():
     angle_err_lists = [angle, err_angle, t_angle]
     pid_lists = [Kp_vector, Ki_vector, Kd_vector, integralError, t_control]
     stim_lists = [current_q, current_h, pw_q, pw_h, t_control]
-    ref_lists = [refKnee, t_ref]
+    ref_lists = [refKnee, t_ref, curveRecr, t_curve]
     ilc_lists = [ilc_memory, ILC_now, t_control]
     esc_lists = [ESC_now, t_control, Kp_hat_vector, Ki_hat_vector, Kd_hat_vector, jcost_vector]
     control_lists = [u, t_control]

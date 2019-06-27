@@ -1,0 +1,21 @@
+
+
+ax1 = subplot(3,1,1);
+    plot(t_curve,curveRecr*500);
+    xlim([0,t_curve(end)]);
+
+ax2 = subplot(3,1,2);
+    plot(t_angle,angle);
+    xlim([0,t_angle(end)]);
+    
+    x = t_curve;
+    v = curveRecr;
+    xq = t_angle;
+    
+    new_c = interp1(x,v,xq);
+    
+ax3 = subplot(3,1,3);
+    plot(xq,vq1);
+    xlim([0,t_angle(end)]);
+    
+    linkaxes([ax1,ax2,ax3],'x');
