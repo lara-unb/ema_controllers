@@ -36,15 +36,74 @@ clear;
 %% 4
 n = 100;
 t = linspace(0,pi/2,n*2);
-ref1 = 35*sin(t);
+ref1 = 20*sin(t);
 ref2 = flip(ref1);
+ref6 = 0*ones(1,2*n);
 t = linspace(0,pi/2,n*4);
-ref3 = 45*sin(t); 
+ref3 = 35*sin(t); 
 ref4 = flip(ref3);
-ref5 = 0*ones(1,n);
+ref5 = 0*ones(1,2*n);
 
-knee_ref = [ref1, ref2, ref3, ref4 ref5]; 
+knee_ref = [ref1, ref2, ref6, ref3, ref4 ref5]; 
 
 plot(knee_ref);
 
-save("senoides1300.mat");
+save("senoides1600.mat");
+
+% 
+% %% 5
+% n = 100;
+% t = linspace(0,pi/2,n*2);
+% ref1 = 15*sin(t);
+% ref2 = flip(ref1);
+% ref6 = 0*ones(1,2*n);
+% t = linspace(0,pi/2,n*4);
+% ref3 = 15*sin(t); 
+% ref4 = flip(ref3);
+% ref5 = 0*ones(1,2*n);
+% 
+% knee_ref = [ref1, ref2, ref6, ref3, ref4 ref5]; 
+% 
+% figure();
+% plot(knee_ref);
+% 
+% save("senoides0a15.mat");
+% 
+% 
+% %% 6
+% n = 100;
+% t = linspace(0,pi/2,n*2);
+% ref1 = 15*sin(t)+15;
+% ref2 = flip(ref1);
+% ref6 = 0*ones(1,2*n)+15;
+% t = linspace(0,pi/2,n*4);
+% ref3 = 15*sin(t)+15; 
+% ref4 = flip(ref3);
+% ref5 = 0*ones(1,2*n)+15;
+% 
+% knee_ref = [ref1, ref2, ref6, ref3, ref4 ref5]; 
+% 
+% figure();
+% plot(knee_ref);
+% 
+% save("senoides15a30.mat");
+% 
+% 
+% 
+% %% 7
+% n = 100;
+% t = linspace(0,pi/2,n*2);
+% ref1 = 15*sin(t)+30;
+% ref2 = flip(ref1);
+% ref6 = 0*ones(1,2*n)+30;
+% t = linspace(0,pi/2,n*4);
+% ref3 = 15*sin(t)+30; 
+% ref4 = flip(ref3);
+% ref5 = 0*ones(1,2*n)+30;
+% 
+% knee_ref = [ref1, ref2, ref6, ref3, ref4 ref5]; 
+% 
+% figure();
+% plot(knee_ref);
+% 
+% save("senoides30a45.mat");

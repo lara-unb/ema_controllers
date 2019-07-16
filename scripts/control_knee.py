@@ -68,6 +68,7 @@ global gui_phase
 global gui_RC
 global gui_K
 global initTime
+global ID_path
 
 gui_enable_c = [False]
 gui_control_sel = [0]
@@ -88,6 +89,7 @@ gui_omega = [0]
 gui_phase = [0]
 gui_RC = [0]
 gui_K = [0]
+ID_path = "/home/ema/git/ema_controllers/data/00_RC/inverse_dynamics.mat"
 
 current_q = [0, 0]
 current_h = [0, 0]
@@ -114,7 +116,7 @@ t_gui = [0]
 t_steps = [0]
 time = [0]
 
-freq = 100.0
+freq = 150.0
 thisKnee = [0, 0]
 u = [0, 0]
 integralError = [0, 0]
@@ -292,13 +294,13 @@ def imu_callback(data):
     # z = (z/pi) * 180  # deg2rad
 
     # angle error
-    # err = refKnee[-1] - x
-    err = refKnee[-1] - y
+    err = refKnee[-1] - x
+    # err = refKnee[-1] - y
 
     # append
     ts = tempo.time() - initTime
-    # angle.append(x)
-    angle.append(y)
+    angle.append(x)
+    # angle.append(y)
     err_angle.append(err)
     t_angle.append(ts)
 
@@ -411,15 +413,26 @@ def control_knee():
     ESC_now = [0, 0, 0, 0, 0]
     ILC_now = [0, 0, 0]
     co_activation = False
-    # initTime = rospy.get_rostime().nsecs
     initTime = tempo.time()
+
+    # load inverse dynamics
+    try:
+        ID_data = sio.loadmat(ID_path)
+        id_pw = ID_data['id_pw'][0]
+        id_angle = ID_data['id_angle'][0]
+        # knee_ref = reference_data['knee_ref'][0]
+        # loaded = 1
+    except:
+        print("Ooops, the file you tried to load is not in the folder.")
+        # knee_ref = [0, 0, 0, 0]
+
 
     # ---------------------------------------------------- start
     while not rospy.is_shutdown():
 
         thisKnee = angle[-1]
         thisError = err_angle[-1]
-        # thisTime = rospy.get_rostime().nsecs - initTime
+        thisRef = refKnee[-1]
         thisTime = tempo.time() - initTime
 
         # ============================== >controllers start here
@@ -442,12 +455,22 @@ def control_knee():
 
         if control_onoff:
 
-            # BB
+            # Open-loop inverse dynamics
             if control_sel == 0:
-                if thisError < 0:
-                    new_u = -1
-                else:
-                    new_u = 1
+
+                try:
+                    res = next(x for x in id_angle if x > thisRef)
+                    # print list(id_angle).index(res)
+                except StopIteration:
+                    res = 0
+                    print "Not in recruitment curve"
+
+                new_u = res/500
+
+                # if thisError < 0:
+                #     new_u = -1
+                # else:
+                #     new_u = 1
 
             # PID
             elif control_sel == 1:
@@ -570,6 +593,8 @@ def control_knee():
         integralError.append(newIntegralError)
         u.append(new_u)
 
+        # print refKnee[-1]
+
         # ============================== controllers end here
 
         # u to pw
@@ -581,15 +606,17 @@ def control_knee():
             new_pw = round(abs(u[-1]) * (500-pw_min_h) + pw_min_h)  # u to pw
             pw_h.append(new_pw)
             pw_q.append(co_act_q)
-            controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), Q : " % (thisKnee, thisError, u[-1], pw_q[-1])
+            controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f) (Q), kp,ki,kd = { %.5f, %.5f, %.5f} : "\
+                         % (thisKnee, thisError, u[-1], pw_q[-1], Kp_vector[-1], Ki_vector[-1], Kd_vector[-1])
 
         else:
             new_pw = round(abs(u[-1]) * (500-pw_min_q) + pw_min_q)  # u to pw
             pw_q.append(new_pw)
             pw_h.append(co_act_h)
-            controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f), H : " % (thisKnee, thisError, u[-1], pw_h[-1])
+            controlMsg = "angle: %.3f, error: %.3f, u: %.3f (pw: %.1f) (H), kp,ki,kd = { %.5f, %.5f, %.5f} : "\
+                         % (thisKnee, thisError, u[-1], pw_h[-1], Kp_vector[-1], Ki_vector[-1], Kd_vector[-1])
 
-        # print(controlMsg)
+        print(controlMsg)
 
         # define current for muscles
         current_q.append(new_current_quad)
